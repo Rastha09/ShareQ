@@ -2,20 +2,25 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8" />
-  <title>Offline File Share</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Share Q - Offline File Share</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
+    /* Tampilan untuk Splash Screen */
     body {
-      font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(to right, #dfe9f3, #ffffff);
       margin: 0;
       padding: 0;
+      background: #ffffff;
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
+      overflow: hidden;
     }
-
+    .logo {
+      width: 400px; /* Ukuran logo splash */
+      max-width: 100vw;
+    }
+    /* Tampilan untuk aplikasi setelah splash */
     .container {
       width: 90%;
       max-width: 400px;
@@ -25,7 +30,6 @@
       border-radius: 20px;
       box-shadow: 0 10px 30px rgba(0,0,0,0.1);
     }
-
     button {
       margin: 10px;
       padding: 12px 20px;
@@ -36,11 +40,9 @@
       font-size: 16px;
       cursor: pointer;
     }
-
     input[type="file"] {
       margin: 10px 0;
     }
-
     video {
       width: 100%;
       border-radius: 10px;
@@ -49,12 +51,11 @@
   </style>
 </head>
 <body>
-  
-  <div id="splash" style="position:fixed;top:0;left:0;width:100%;height:100%;background:#fff;z-index:9999;display:flex;justify-content:center;align-items:center;">
-  <img src="splash.png" alt="Splash Logo" style="width:350px;height:auto;">
-</div>
-  
-  <div class="container" id="home">
+  <div id="splash">
+    <img src="splash.png" alt="Share Q Logo" class="logo" />
+  </div>
+
+  <div class="container" id="home" style="display:none;">
     <h2>Offline File Share</h2>
     <button onclick="showSend()">Kirim File</button>
     <button onclick="showReceive()">Terima File</button>
@@ -75,6 +76,12 @@
 
   <!-- QRCode library -->
   <script>
+    // Menampilkan splash screen selama 2 detik
+    setTimeout(() => {
+      document.getElementById('splash').style.display = 'none';
+      document.getElementById('home').style.display = 'block';
+    }, 2000);
+
     // QRCode.min.js (versi ringkas)
     class QRCode{constructor(e,t){this._el=e,this._options=t,this.makeCode(t.text)}makeCode(e){this._el.innerHTML="";let t=document.createElement("canvas");new QRious({element:t,value:e,size:this._options.width});this._el.appendChild(t)}}class QRious{constructor(e){this.element=e.element,this.value=e.value,this.size=e.size,this._draw()}_draw(){const e=document.createElement("canvas");e.width=this.size,e.height=this.size,this.element.getContext("2d").clearRect(0,0,this.size,this.size);let t=new QRCodeGenerator(0,1);t.addData(this.value),t.make();let r=this.size/t.getModuleCount();for(let a=0;a<t.getModuleCount();a++)for(let i=0;i<t.getModuleCount();i++)this.element.getContext("2d").fillStyle=t.isDark(a,i)?"#000":"#fff",this.element.getContext("2d").fillRect(i*r,a*r,r,r)}}function QRCodeGenerator(e,t){let r=new QRCodeModel(t,e);return r.addData=function(e){this.dataList.push(new QR8bitByte(e)),this.dataCache=null},r.make=function(){null===this.dataCache&&(this.dataCache=QRCodeModel.createData(this.typeNumber,this.errorCorrectLevel,this.dataList)),QRCodeModel.setup(this)},r}
 
@@ -123,11 +130,6 @@
         }
       });
     });
-    
-    setTimeout(() => {
-  document.getElementById("splash").style.display = "none";
-}, 2000);
-    
   </script>
 </body>
 </html>
